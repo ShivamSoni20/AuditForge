@@ -1,5 +1,8 @@
 // API Configuration
-export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+// In production (Vercel), API is at root /api
+// In development, API is at localhost:3001
+export const API_URL = import.meta.env.VITE_API_URL || 
+  (import.meta.env.PROD ? '' : 'http://localhost:3001');
 
 export const config = {
   apiUrl: API_URL,
