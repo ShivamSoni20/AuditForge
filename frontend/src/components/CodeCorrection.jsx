@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { Wand2, Download, Copy, Check, AlertCircle, Code2, FileCode } from 'lucide-react';
+import { API_URL } from '../config';
 
 function CodeCorrection({ originalCode, language, vulnerabilities, contractName }) {
   const [correcting, setCorrecting] = useState(false);
@@ -20,7 +21,7 @@ function CodeCorrection({ originalCode, language, vulnerabilities, contractName 
         v => v.severity === 'critical' || v.severity === 'high'
       );
 
-      const response = await axios.post('/api/correct-code', {
+      const response = await axios.post(`${API_URL}/api/correct-code`, {
         code: originalCode,
         language,
         vulnerabilities: criticalVulns

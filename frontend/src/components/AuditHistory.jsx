@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Clock, FileCode, TrendingUp, AlertCircle } from 'lucide-react';
+import { Clock, FileText, AlertTriangle } from 'lucide-react';
+import { API_URL } from '../config';
 
 function AuditHistory({ onSelectAudit }) {
   const [audits, setAudits] = useState([]);
@@ -12,7 +13,7 @@ function AuditHistory({ onSelectAudit }) {
 
   const fetchAudits = async () => {
     try {
-      const response = await axios.get('/api/audits?limit=20');
+      const response = await axios.get(`${API_URL}/api/audits?limit=20`);
       setAudits(response.data);
     } catch (error) {
       console.error('Failed to fetch audits:', error);

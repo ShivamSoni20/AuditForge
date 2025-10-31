@@ -80,6 +80,23 @@ Get API key from [aimlapi.com](https://aimlapi.com/)
 **Frontend:** React, Vite, TailwindCSS  
 **Backend:** Node.js, Express, AIML API, PDFKit
 
+## 🚀 Deployment
+
+### Quick Deploy (Recommended)
+
+**Use Railway** for easiest deployment:
+1. Go to https://railway.app
+2. Connect your GitHub repo
+3. Railway auto-deploys both frontend & backend
+4. Add `AIML_API_KEY` in environment variables
+
+### Vercel (Frontend Only)
+
+If deploying to Vercel, you need to:
+1. Deploy backend separately (Railway/Render)
+2. Set `VITE_API_URL` in Vercel environment variables
+3. Point to your backend URL
+
 ## 📄 License
 
 MIT License

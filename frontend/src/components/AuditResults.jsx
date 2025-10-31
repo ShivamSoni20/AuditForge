@@ -11,6 +11,7 @@ import {
   Zap
 } from 'lucide-react';
 import CodeCorrection from './CodeCorrection';
+import { API_URL } from '../config';
 
 function AuditResults({ audit, isAuditing, originalCode, language, contractName }) {
   const [downloading, setDownloading] = useState(false);
@@ -18,7 +19,7 @@ function AuditResults({ audit, isAuditing, originalCode, language, contractName 
   const handleDownloadReport = async () => {
     setDownloading(true);
     try {
-      const response = await axios.post(`/api/report/${audit.id}`, {}, {
+      const response = await axios.post(`${API_URL}/api/report/${audit.id}`, {}, {
         responseType: 'blob'
       });
       

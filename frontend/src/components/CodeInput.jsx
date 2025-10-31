@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { Upload, Code, Loader2, Play } from 'lucide-react';
+import { API_URL } from '../config';
 
 const EXAMPLE_CONTRACTS = {
   solidity: `// SPDX-License-Identifier: MIT
@@ -72,7 +73,7 @@ function CodeInput({ onAuditComplete, isAuditing, setIsAuditing }) {
     setIsAuditing(true);
 
     try {
-      const response = await axios.post('/api/audit', {
+      const response = await axios.post(`${API_URL}/api/audit`, {
         code,
         language,
         contractName: contractName || 'Unnamed Contract'
