@@ -1,0 +1,19 @@
+{
+  "name": "auditforge",
+  "version": "1.0.0",
+  "description": "AuditForge - AI-powered smart contract auditor for DePIN and NodeOps",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd backend && node server.js",
+    "client": "cd frontend && npm run dev",
+    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install"
+  },
+  "keywords": ["depin", "smart-contract", "auditor", "nodeops", "blockchain"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
