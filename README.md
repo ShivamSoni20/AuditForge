@@ -82,17 +82,36 @@ Get API key from [aimlapi.com](https://aimlapi.com/)
 
 ## 🚀 Deployment
 
-### Quick Deploy (Recommended)
+### Option 1: Railway (Recommended)
 
-**Use Railway** for easiest deployment:
+**Easiest full-stack deployment**:
 1. Go to https://railway.app
 2. Connect your GitHub repo
 3. Railway auto-deploys both frontend & backend
 4. Add `AIML_API_KEY` in environment variables
 
-### Vercel (Frontend Only)
+### Option 2: Docker / NodeOps
 
-If deploying to Vercel, you need to:
+**For NodeOps Template Marketplace**:
+
+1. **Install Docker**: https://www.docker.com/get-started
+2. **Build Image**:
+   ```bash
+   docker build -t auditforge:latest .
+   ```
+3. **Push to Docker Hub**:
+   ```bash
+   docker login
+   docker tag auditforge:latest yourusername/auditforge:latest
+   docker push yourusername/auditforge:latest
+   ```
+4. **Submit to NodeOps**: Use image URL `docker.io/yourusername/auditforge:latest`
+
+📚 **See `DOCKER_QUICKSTART.md` for complete Docker guide**
+
+### Option 3: Vercel (Frontend Only)
+
+If deploying to Vercel:
 1. Deploy backend separately (Railway/Render)
 2. Set `VITE_API_URL` in Vercel environment variables
 3. Point to your backend URL
