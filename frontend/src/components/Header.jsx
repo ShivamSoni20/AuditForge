@@ -1,4 +1,4 @@
-import { Shield, Github } from 'lucide-react';
+import { Shield } from 'lucide-react';
 
 function Header() {
   return (
@@ -16,18 +16,6 @@ function Header() {
               <p className="text-[10px] sm:text-xs text-gray-400 hidden sm:block">Forging Secure Contracts</p>
             </div>
           </div>
-          
-          <nav className="flex items-center gap-2 sm:gap-4">
-            <a 
-              href="https://github.com" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 sm:gap-2 text-gray-400 hover:text-white transition-colors px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg hover:bg-gray-800/50"
-            >
-              <Github className="w-4 h-4 sm:w-5 sm:h-5" />
-              <span className="hidden md:inline text-sm">GitHub</span>
-            </a>
-          </nav>
         </div>
       </div>
     </header>
