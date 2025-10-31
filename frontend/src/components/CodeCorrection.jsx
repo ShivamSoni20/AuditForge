@@ -21,6 +21,12 @@ function CodeCorrection({ originalCode, language, vulnerabilities, contractName 
         v => v.severity === 'critical' || v.severity === 'high'
       );
 
+      if (criticalVulns.length === 0) {
+        setError('No critical or high severity vulnerabilities found to fix. Your code looks good!');
+        setCorrecting(false);
+        return;
+      }
+
       const response = await axios.post(`${API_URL}/api/correct-code`, {
         code: originalCode,
         language,
@@ -29,7 +35,7 @@ function CodeCorrection({ originalCode, language, vulnerabilities, contractName 
 
       setCorrection(response.data);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to generate code correction');
+      setError(err.response?.data?.message || err.response?.data?.error || 'Failed to generate code correction');
     } finally {
       setCorrecting(false);
     }

@@ -1,0 +1,49 @@
+# NodeOps Template Configuration for AuditForge
+# AI-powered smart contract security auditor for DePIN and NodeOps ecosystems
+
+# Defines the version of the configuration format
+version: 0.1
+
+# Services are a collection of workloads that work together
+services:
+  # Defines a workload named 'auditforge'
+  auditforge:
+    # Specify the container image name; Make sure image is public
+    image: shivamsoni20/auditforge:latest
+
+    # Determines when to fetch the latest version of the workload
+    imagePullPolicy: Always
+
+    # Defines the command to run; empty by default
+    command: []
+
+    # Specifies arguments for the command; empty by default
+    args: []
+
+    # Defines network-related settings
+    ports:
+      - containerPort: 3000 # Frontend - Web UI (React + Vite)
+        protocol: TCP
+        expose: true # This will generate the URL for the frontend
+      - containerPort: 3001 # Backend - REST API (Node.js + Express)
+        protocol: TCP
+        expose: true # This will generate the URL for the backend API
+
+    # Environment variables (optional)
+    env:
+      - name: NODE_ENV
+        value: production
+      - name: PORT
+        value: "3001"
+      - name: FRONTEND_PORT
+        value: "3000"
+      # Uncomment and add your AIML API key for AI-powered features
+      # - name: AIML_API_KEY
+      #   value: your_aiml_api_key_here
+
+    # Specifies the minimum resource allocation
+    # This also specify the template price
+    resourceUsage:
+      idle:
+        cpu: 1000 # CPU allocation (1 core = 1000 millicores)
+        memory: 1024 # Memory allocation in MB (1GB)

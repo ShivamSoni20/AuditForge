@@ -92,22 +92,19 @@ Get API key from [aimlapi.com](https://aimlapi.com/)
 
 ### Option 2: Docker / NodeOps
 
-**For NodeOps Template Marketplace**:
+**Deploy with Docker**:
+```bash
+docker run -d \
+  --name auditforge \
+  -p 3000:3000 \
+  -p 3001:3001 \
+  -e AIML_API_KEY=your_key \
+  shivamsoni20/auditforge:latest
+```
 
-1. **Install Docker**: https://www.docker.com/get-started
-2. **Build Image**:
-   ```bash
-   docker build -t auditforge:latest .
-   ```
-3. **Push to Docker Hub**:
-   ```bash
-   docker login
-   docker tag auditforge:latest yourusername/auditforge:latest
-   docker push yourusername/auditforge:latest
-   ```
-4. **Submit to NodeOps**: Use image URL `docker.io/yourusername/auditforge:latest`
-
-📚 **See `DOCKER_QUICKSTART.md` for complete Docker guide**
+**NodeOps Template**: Available on NodeOps Marketplace  
+**Docker Hub**: https://hub.docker.com/r/shivamsoni20/auditforge  
+**Config**: See `nodeops-config.yaml` for NodeOps deployment
 
 ### Option 3: Vercel (Frontend Only)
 

@@ -168,9 +168,16 @@ app.post('/api/correct-code', async (req, res) => {
   try {
     const { code, language, vulnerabilities } = req.body;
 
-    if (!code || !language || !vulnerabilities) {
+    if (!code || !language) {
       return res.status(400).json({ 
-        error: 'Code, language, and vulnerabilities are required' 
+        error: 'Code and language are required' 
+      });
+    }
+
+    if (!vulnerabilities || vulnerabilities.length === 0) {
+      return res.status(400).json({ 
+        error: 'No vulnerabilities to fix',
+        message: 'Please provide at least one vulnerability to correct'
       });
     }
 
