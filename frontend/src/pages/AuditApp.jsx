@@ -30,7 +30,7 @@ function AuditApp() {
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12 max-w-7xl">
         {/* Hero Section */}
         <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-blue-300 via-purple-400 to-pink-400 bg-clip-text text-transparent leading-tight px-2 drop-shadow-[0_0_30px_rgba(147,51,234,0.5)]">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-blue-300 via-purple-400 to-pink-400 bg-clip-text text-transparent leading-normal px-2 pb-2 drop-shadow-[0_0_30px_rgba(147,51,234,0.5)]">
             AuditForge
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-gray-200 mb-4 sm:mb-6 px-4 max-w-3xl mx-auto">
