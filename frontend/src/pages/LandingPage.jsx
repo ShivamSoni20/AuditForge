@@ -6,14 +6,14 @@ import {
   CheckCircle, 
   Code, 
   FileText, 
-  Github, 
   ArrowRight,
   Sparkles,
   Lock,
   TrendingUp,
   Users,
   Cpu,
-  Globe
+  Globe,
+  Github
 } from 'lucide-react';
 
 function LandingPage() {
@@ -29,22 +29,12 @@ function LandingPage() {
                 AuditForge
               </span>
             </div>
-            <div className="flex items-center gap-4">
-              <a 
-                href="https://github.com/ShivamSoni20/AuditForge" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                <Github className="w-6 h-6" />
-              </a>
-              <Link 
-                to="/app"
-                className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-lg font-semibold transition-all shadow-lg hover:shadow-blue-500/50"
-              >
-                Launch App
-              </Link>
-            </div>
+            <Link 
+              to="/app"
+              className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-lg font-semibold transition-all shadow-lg hover:shadow-blue-500/50"
+            >
+              Launch App
+            </Link>
           </div>
         </div>
       </nav>
