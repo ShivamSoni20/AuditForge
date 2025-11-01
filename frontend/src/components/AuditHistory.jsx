@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Clock, FileText, AlertTriangle } from 'lucide-react';
+import { Clock, FileText, AlertTriangle, AlertCircle } from 'lucide-react';
 import { API_URL } from '../config';
 
 function AuditHistory({ onSelectAudit }) {

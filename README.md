@@ -59,11 +59,18 @@ Get API key from [aimlapi.com](https://aimlapi.com/)
 
 ## 🎯 Usage
 
-1. Open http://localhost:3000
+### Landing Page
+1. Open http://localhost:3000 to view the landing page
+2. Explore MVP features and documentation
+3. Click "Launch App" to start auditing
+
+### Audit Interface
+1. Navigate to http://localhost:3000/app
 2. Paste or upload contract
-3. Select language (Solidity/Rust)
+3. Select language (Solidity/Rust/Move)
 4. Click "Run Audit"
 5. Review results & download PDF
+6. Use AI Code Correction for automatic fixes
 
 ## 🔐 Security Checks
 
