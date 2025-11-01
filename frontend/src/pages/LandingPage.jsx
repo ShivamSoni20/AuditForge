@@ -25,7 +25,7 @@ function LandingPage() {
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
               <Shield className="w-8 h-8 text-blue-500" />
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+              <span className="text-2xl font-bold bg-gradient-to-r from-blue-300 to-purple-400 bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(147,51,234,0.4)]">
                 AuditForge
               </span>
             </div>
@@ -48,17 +48,17 @@ function LandingPage() {
           </div>
           
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-            <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-300 via-purple-400 to-pink-400 bg-clip-text text-transparent drop-shadow-[0_0_40px_rgba(147,51,234,0.6)]">
               Forge Secure
             </span>
             <br />
-            <span className="text-white">Smart Contracts</span>
+            <span className="text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]">Smart Contracts</span>
           </h1>
           
-          <p className="text-xl text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-gray-200 mb-10 max-w-3xl mx-auto leading-relaxed">
             AuditForge is an AI-powered smart contract auditor specifically designed for 
-            <span className="text-blue-400 font-semibold"> DePIN</span> and 
-            <span className="text-purple-400 font-semibold"> NodeOps</span> ecosystems. 
+            <span className="text-blue-300 font-semibold"> DePIN</span> and 
+            <span className="text-purple-300 font-semibold"> NodeOps</span> ecosystems. 
             Get comprehensive security analysis in under a minute.
           </p>
           
@@ -423,7 +423,7 @@ function LandingPage() {
             <div className="md:col-span-2">
               <div className="flex items-center gap-2 mb-4">
                 <Shield className="w-8 h-8 text-blue-500" />
-                <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                <span className="text-2xl font-bold bg-gradient-to-r from-blue-300 to-purple-400 bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(147,51,234,0.4)]">
                   AuditForge
                 </span>
               </div>
