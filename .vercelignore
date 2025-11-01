@@ -1,0 +1,14 @@
+node_modules
+.git
+.env
+.env.local
+*.log
+.DS_Store
+backend/node_modules
+frontend/node_modules
+README.md
+LICENSE
+docker-compose.yml
+Dockerfile
+.dockerignore
+nodeops-config.yaml
