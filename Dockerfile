@@ -33,9 +33,6 @@ FROM node:18-alpine
 # Set working directory
 WORKDIR /app
 
-# Install serve to host frontend
-RUN npm install -g serve pm2
-
 # Copy backend from builder
 COPY --from=backend-builder /app/backend/node_modules ./backend/node_modules
 COPY backend/ ./backend/
@@ -46,23 +43,16 @@ COPY --from=frontend-builder /app/frontend/dist ./frontend/dist
 # Copy root package.json
 COPY package.json ./
 
-# Create startup script
-RUN echo '#!/bin/sh' > /app/start.sh && \
-    echo 'cd /app/backend && node server.js &' >> /app/start.sh && \
-    echo 'cd /app/frontend && serve -s dist -p 3000' >> /app/start.sh && \
-    chmod +x /app/start.sh
-
-# Expose ports
-EXPOSE 3000 3001
+# Expose single port for both frontend and backend
+EXPOSE 3000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3001/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
+  CMD node -e "require('http').get('http://localhost:3000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
 
 # Set environment variables
 ENV NODE_ENV=production \
-    PORT=3001 \
-    FRONTEND_PORT=3000
+    PORT=3000
 
-# Start both services
-CMD ["/bin/sh", "/app/start.sh"]
+# Start server (serves both frontend and API)
+CMD ["node", "backend/server.js"]

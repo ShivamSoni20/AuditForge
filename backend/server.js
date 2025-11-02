@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import multer from 'multer';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { v4 as uuidv4 } from 'uuid';
 import { auditContract } from './services/auditEngine.js';
 import { generatePDFReport } from './services/reportGenerator.js';
@@ -13,13 +15,22 @@ import {
 
 dotenv.config();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Serve static frontend files in production
+if (process.env.NODE_ENV === 'production') {
+  const frontendPath = path.join(__dirname, '../frontend/dist');
+  app.use(express.static(frontendPath));
+}
 
 // In-memory storage for audits (use database in production)
 const auditHistory = [];
@@ -233,13 +244,21 @@ app.post('/api/fix-vulnerability', async (req, res) => {
   }
 });
 
-// Start server (for local development)
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, () => {
-    console.log(`🚀 AuditForge API running on port ${PORT}`);
-    console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
+// Serve frontend for all non-API routes (must be last)
+if (process.env.NODE_ENV === 'production') {
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
   });
 }
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`🚀 AuditForge running on port ${PORT}`);
+  console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
+  if (process.env.NODE_ENV === 'production') {
+    console.log(`🌐 Frontend & API served on port ${PORT}`);
+  }
+});
 
 // Export for Vercel serverless
 export default app;

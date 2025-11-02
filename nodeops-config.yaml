@@ -22,12 +22,9 @@ services:
 
     # Defines network-related settings
     ports:
-      - containerPort: 3000 # Frontend - Web UI (React + Vite)
+      - containerPort: 3000 # Combined Frontend & Backend (React + Express)
         protocol: TCP
-        expose: true # This will generate the URL for the frontend
-      - containerPort: 3001 # Backend - REST API (Node.js + Express)
-        protocol: TCP
-        expose: true # This will generate the URL for the backend API
+        expose: true # This will generate the URL for the application
 
     # Environment variables (required for production deployment)
     env:
@@ -35,12 +32,8 @@ services:
       - name: NODE_ENV
         value: production
       
-      # Backend API port
+      # Application port (serves both frontend and API)
       - name: PORT
-        value: "3001"
-      
-      # Frontend port
-      - name: FRONTEND_PORT
         value: "3000"
       
       # AIML API Configuration (Required for AI-powered audit features)
