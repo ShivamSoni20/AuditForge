@@ -7,6 +7,9 @@ package-lock.json
 .env.local
 .env.production
 
+# NodeOps configuration (contains sensitive API keys)
+nodeops-config.yaml
+
 # Build outputs
 dist/
 build/
