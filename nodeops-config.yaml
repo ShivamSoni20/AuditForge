@@ -29,17 +29,28 @@ services:
         protocol: TCP
         expose: true # This will generate the URL for the backend API
 
-    # Environment variables (optional)
+    # Environment variables (required for production deployment)
     env:
+      # Node.js environment
       - name: NODE_ENV
         value: production
+      
+      # Backend API port
       - name: PORT
         value: "3001"
+      
+      # Frontend port
       - name: FRONTEND_PORT
         value: "3000"
-      # Uncomment and add your AIML API key for AI-powered features
-      # - name: AIML_API_KEY
-      #   value: your_aiml_api_key_here
+      
+      # AIML API Configuration (Required for AI-powered audit features)
+      # Replace 'your_aiml_api_key_here' with your actual AIML API key
+      - name: AIML_API_KEY
+        value: e40f03e41b7e4e65a59bab4f83abbc2d
+      
+      # AIML API Base URL (optional, defaults to https://api.aimlapi.com/v1)
+      - name: AIML_BASE_URL
+        value: https://api.aimlapi.com/v1
 
     # Specifies the minimum resource allocation
     # This also specify the template price
