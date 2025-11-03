@@ -2,14 +2,17 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import CodeInput from '../components/CodeInput';
+import EtherscanInput from '../components/EtherscanInput';
+import ChatInterface from '../components/ChatInterface';
 import AuditResults from '../components/AuditResults';
 import AuditHistory from '../components/AuditHistory';
-import { Shield, Zap, Network, ArrowLeft } from 'lucide-react';
+import { Shield, Zap, Network, ArrowLeft, Code, Search, MessageCircle } from 'lucide-react';
 
 function AuditApp() {
   const [currentAudit, setCurrentAudit] = useState(null);
   const [isAuditing, setIsAuditing] = useState(false);
   const [activeTab, setActiveTab] = useState('audit');
+  const [inputMode, setInputMode] = useState('code'); // 'code' or 'etherscan'
   const [auditContext, setAuditContext] = useState(null);
 
   return (
@@ -56,10 +59,10 @@ function AuditApp() {
 
         {/* Tab Navigation */}
         <div className="flex justify-center mb-6 sm:mb-8 px-2">
-          <div className="bg-gray-800/80 backdrop-blur-sm rounded-lg sm:rounded-xl p-1 inline-flex w-full sm:w-auto max-w-md shadow-lg">
+          <div className="bg-gray-800/80 backdrop-blur-sm rounded-lg sm:rounded-xl p-1 inline-flex w-full sm:w-auto max-w-2xl shadow-lg">
             <button
               onClick={() => setActiveTab('audit')}
-              className={`flex-1 sm:flex-none px-4 sm:px-6 py-2.5 sm:py-3 rounded-md sm:rounded-lg transition-all font-medium text-sm sm:text-base ${
+              className={`flex-1 sm:flex-none px-3 sm:px-5 py-2.5 sm:py-3 rounded-md sm:rounded-lg transition-all font-medium text-sm sm:text-base ${
                 activeTab === 'audit'
                   ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg'
                   : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
@@ -68,42 +71,98 @@ function AuditApp() {
               New Audit
             </button>
             <button
+              onClick={() => setActiveTab('chat')}
+              className={`flex-1 sm:flex-none px-3 sm:px-5 py-2.5 sm:py-3 rounded-md sm:rounded-lg transition-all font-medium text-sm sm:text-base flex items-center justify-center gap-2 ${
+                activeTab === 'chat'
+                  ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg'
+                  : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
+              }`}
+            >
+              <MessageCircle className="w-4 h-4" />
+              <span>AI Chat</span>
+            </button>
+            <button
               onClick={() => setActiveTab('history')}
-              className={`flex-1 sm:flex-none px-4 sm:px-6 py-2.5 sm:py-3 rounded-md sm:rounded-lg transition-all font-medium text-sm sm:text-base ${
+              className={`flex-1 sm:flex-none px-3 sm:px-5 py-2.5 sm:py-3 rounded-md sm:rounded-lg transition-all font-medium text-sm sm:text-base ${
                 activeTab === 'history'
                   ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg'
                   : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
               }`}
             >
-              Audit History
+              History
             </button>
           </div>
         </div>
 
         {/* Content */}
         {activeTab === 'audit' ? (
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 sm:gap-8">
-            <div className="w-full">
-              <CodeInput 
-                onAuditComplete={(audit, context) => {
-                  setCurrentAudit(audit);
-                  setAuditContext(context);
-                }}
-                isAuditing={isAuditing}
-                setIsAuditing={setIsAuditing}
-              />
-            </div>
-            {currentAudit && (
-              <div className="w-full">
-                <AuditResults 
-                  audit={currentAudit}
-                  isAuditing={isAuditing}
-                  originalCode={auditContext?.code}
-                  language={auditContext?.language}
-                  contractName={auditContext?.contractName}
-                />
+          <>
+            {/* Input Mode Toggle */}
+            <div className="flex justify-center mb-6 px-2">
+              <div className="bg-gray-800/80 backdrop-blur-sm rounded-lg p-1 inline-flex w-full sm:w-auto max-w-md shadow-lg">
+                <button
+                  onClick={() => setInputMode('code')}
+                  className={`flex-1 sm:flex-none px-4 sm:px-6 py-2.5 rounded-md transition-all font-medium text-sm sm:text-base flex items-center justify-center gap-2 ${
+                    inputMode === 'code'
+                      ? 'bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg'
+                      : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
+                  }`}
+                >
+                  <Code className="w-4 h-4" />
+                  <span>Paste Code</span>
+                </button>
+                <button
+                  onClick={() => setInputMode('etherscan')}
+                  className={`flex-1 sm:flex-none px-4 sm:px-6 py-2.5 rounded-md transition-all font-medium text-sm sm:text-base flex items-center justify-center gap-2 ${
+                    inputMode === 'etherscan'
+                      ? 'bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg'
+                      : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
+                  }`}
+                >
+                  <Search className="w-4 h-4" />
+                  <span>Etherscan</span>
+                </button>
               </div>
-            )}
+            </div>
+
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 sm:gap-8">
+              <div className="w-full">
+                {inputMode === 'code' ? (
+                  <CodeInput 
+                    onAuditComplete={(audit, context) => {
+                      setCurrentAudit(audit);
+                      setAuditContext(context);
+                    }}
+                    isAuditing={isAuditing}
+                    setIsAuditing={setIsAuditing}
+                  />
+                ) : (
+                  <EtherscanInput 
+                    onAuditComplete={(audit, context) => {
+                      setCurrentAudit(audit);
+                      setAuditContext(context);
+                    }}
+                    isAuditing={isAuditing}
+                    setIsAuditing={setIsAuditing}
+                  />
+                )}
+              </div>
+              {currentAudit && (
+                <div className="w-full">
+                  <AuditResults 
+                    audit={currentAudit}
+                    isAuditing={isAuditing}
+                    originalCode={auditContext?.code}
+                    language={auditContext?.language}
+                    contractName={auditContext?.contractName}
+                  />
+                </div>
+              )}
+            </div>
+          </>
+        ) : activeTab === 'chat' ? (
+          <div className="max-w-5xl mx-auto">
+            <ChatInterface />
           </div>
         ) : (
           <AuditHistory onSelectAudit={setCurrentAudit} />

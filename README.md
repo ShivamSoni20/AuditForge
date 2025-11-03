@@ -11,12 +11,14 @@ AI-powered smart contract security auditor specialized for **DePIN** and **NodeO
 ## ✨ Features
 
 - 🤖 **AI-Powered Analysis** - GPT-4o integration for intelligent vulnerability detection
+- 💬 **AI Chat Interface** - Conversational contract analysis with natural language
 - 🔍 **Multi-Layer Scanning** - AI + Static + DePIN-specific checks
 - ⚡ **Fast Results** - Complete audits in under 60 seconds
 - 🌐 **DePIN Specialized** - Node operator risks, staking, slashing mechanisms
 - 🔨 **Code Correction** - AI-powered automatic vulnerability fixes
 - 📊 **PDF Reports** - Professional downloadable audit reports
 - 🔧 **Multi-Language** - Solidity and Rust support
+- 🔗 **Etherscan Integration** - Fetch and audit verified contracts from 8+ EVM chains
 
 ## 🚀 Quick Start
 
@@ -42,9 +44,15 @@ Add to `backend/.env`:
 ```env
 AIML_API_KEY=your_aiml_api_key_here
 AIML_BASE_URL=https://api.aimlapi.com/v1
+
+# Etherscan API (for contract fetching)
+ETHERSCAN_API_KEY=your_etherscan_api_key_here
+ETHERSCAN_BASE_URL=https://api.etherscan.io/api
 ```
 
-Get API key from [aimlapi.com](https://aimlapi.com/)
+Get API keys from:
+- [aimlapi.com](https://aimlapi.com/) - For AI analysis
+- [etherscan.io/apis](https://etherscan.io/apis) - For contract fetching (optional)
 
 ## 📁 Structure
 
@@ -66,11 +74,21 @@ Get API key from [aimlapi.com](https://aimlapi.com/)
 
 ### Audit Interface
 1. Navigate to http://localhost:3000/app
-2. Paste or upload contract
-3. Select language (Solidity/Rust/Move)
-4. Click "Run Audit"
-5. Review results & download PDF
-6. Use AI Code Correction for automatic fixes
+2. Choose your preferred method:
+
+   **🔨 Traditional Audit:**
+   - **Option A - Manual Input:** Paste or upload contract code
+   - **Option B - Etherscan Fetch:** Enter verified contract address
+   - Click "Run Audit" and review results
+   
+   **💬 AI Chat Assistant:**
+   - Click "AI Chat" tab
+   - Paste contract address or upload file
+   - Chat naturally: "Analyze this contract" or "Fix vulnerabilities"
+   - Get instant analysis, explanations, and corrected code
+
+3. Download PDF reports or fixed contracts
+4. View audit history
 
 ## 🔐 Security Checks
 
