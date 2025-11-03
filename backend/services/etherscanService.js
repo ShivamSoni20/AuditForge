@@ -5,46 +5,54 @@ dotenv.config();
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
 const ETHERSCAN_BASE_URL = process.env.ETHERSCAN_BASE_URL || 'https://api.etherscan.io/api';
 
-// Supported EVM chains configuration
+// Supported EVM chains configuration with V2 API
 const CHAIN_CONFIGS = {
   ethereum: {
     name: 'Ethereum Mainnet',
-    baseUrl: 'https://api.etherscan.io/api',
+    baseUrl: 'https://api.etherscan.io/v2/api',
+    chainId: '1',
     explorer: 'https://etherscan.io'
   },
   goerli: {
     name: 'Goerli Testnet',
-    baseUrl: 'https://api-goerli.etherscan.io/api',
+    baseUrl: 'https://api-goerli.etherscan.io/v2/api',
+    chainId: '5',
     explorer: 'https://goerli.etherscan.io'
   },
   sepolia: {
     name: 'Sepolia Testnet',
-    baseUrl: 'https://api-sepolia.etherscan.io/api',
+    baseUrl: 'https://api-sepolia.etherscan.io/v2/api',
+    chainId: '11155111',
     explorer: 'https://sepolia.etherscan.io'
   },
   bsc: {
     name: 'BSC Mainnet',
-    baseUrl: 'https://api.bscscan.com/api',
+    baseUrl: 'https://api.bscscan.com/v2/api',
+    chainId: '56',
     explorer: 'https://bscscan.com'
   },
   polygon: {
     name: 'Polygon Mainnet',
-    baseUrl: 'https://api.polygonscan.com/api',
+    baseUrl: 'https://api.polygonscan.com/v2/api',
+    chainId: '137',
     explorer: 'https://polygonscan.com'
   },
   arbitrum: {
     name: 'Arbitrum One',
-    baseUrl: 'https://api.arbiscan.io/api',
+    baseUrl: 'https://api.arbiscan.io/v2/api',
+    chainId: '42161',
     explorer: 'https://arbiscan.io'
   },
   optimism: {
     name: 'Optimism',
-    baseUrl: 'https://api-optimistic.etherscan.io/api',
+    baseUrl: 'https://api-optimistic.etherscan.io/v2/api',
+    chainId: '10',
     explorer: 'https://optimistic.etherscan.io'
   },
   base: {
     name: 'Base',
-    baseUrl: 'https://api.basescan.org/api',
+    baseUrl: 'https://api.basescan.org/v2/api',
+    chainId: '8453',
     explorer: 'https://basescan.org'
   }
 };
@@ -53,7 +61,14 @@ const CHAIN_CONFIGS = {
  * Get base URL for a specific chain
  */
 function getChainBaseUrl(chain = 'ethereum') {
-  return CHAIN_CONFIGS[chain]?.baseUrl || ETHERSCAN_BASE_URL;
+  return CHAIN_CONFIGS[chain]?.baseUrl || 'https://api.etherscan.io/v2/api';
+}
+
+/**
+ * Get chain ID for a specific chain
+ */
+function getChainId(chain = 'ethereum') {
+  return CHAIN_CONFIGS[chain]?.chainId || '1';
 }
 
 /**
@@ -65,7 +80,9 @@ function getChainBaseUrl(chain = 'ethereum') {
 export async function fetchContractABI(address, chain = 'ethereum') {
   try {
     const baseUrl = getChainBaseUrl(chain);
+    const chainId = getChainId(chain);
     const params = new URLSearchParams({
+      chainid: chainId,
       module: 'contract',
       action: 'getabi',
       address,
@@ -103,7 +120,9 @@ export async function fetchContractABI(address, chain = 'ethereum') {
 export async function fetchContractSourceCode(address, chain = 'ethereum') {
   try {
     const baseUrl = getChainBaseUrl(chain);
+    const chainId = getChainId(chain);
     const params = new URLSearchParams({
+      chainid: chainId,
       module: 'contract',
       action: 'getsourcecode',
       address,
@@ -111,6 +130,15 @@ export async function fetchContractSourceCode(address, chain = 'ethereum') {
     });
 
     const response = await fetch(`${baseUrl}?${params.toString()}`);
+    
+    // Check HTTP status
+    if (!response.ok) {
+      if (response.status === 429) {
+        throw new Error('Rate limit exceeded. Please try again in a moment.');
+      }
+      throw new Error(`Etherscan API error: ${response.status} ${response.statusText}`);
+    }
+    
     const data = await response.json();
 
     if (data.status === '0') {
@@ -154,7 +182,9 @@ export async function fetchContractSourceCode(address, chain = 'ethereum') {
 export async function fetchContractCreator(address, chain = 'ethereum') {
   try {
     const baseUrl = getChainBaseUrl(chain);
+    const chainId = getChainId(chain);
     const params = new URLSearchParams({
+      chainid: chainId,
       module: 'contract',
       action: 'getcontractcreation',
       contractaddresses: address,
@@ -195,7 +225,9 @@ export async function fetchContractCreator(address, chain = 'ethereum') {
 export async function checkVerificationStatus(guid, chain = 'ethereum') {
   try {
     const baseUrl = getChainBaseUrl(chain);
+    const chainId = getChainId(chain);
     const params = new URLSearchParams({
+      chainid: chainId,
       module: 'contract',
       action: 'checkverifystatus',
       guid,
@@ -229,7 +261,9 @@ export async function checkVerificationStatus(guid, chain = 'ethereum') {
 export async function checkProxyVerification(guid, chain = 'ethereum') {
   try {
     const baseUrl = getChainBaseUrl(chain);
+    const chainId = getChainId(chain);
     const params = new URLSearchParams({
+      chainid: chainId,
       module: 'contract',
       action: 'checkproxyverification',
       guid,

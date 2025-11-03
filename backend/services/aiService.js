@@ -38,12 +38,20 @@ export async function analyzeWithAI(code, language, contractName) {
       max_tokens: 2000
     });
 
-    const analysis = completion.choices[0].message.content;
+    const analysis = completion.choices[0]?.message?.content;
+    if (!analysis) {
+      console.error('Empty response from AIML API');
+      return fallbackAnalysis(code, language);
+    }
+    
     console.log('AIML API analysis completed');
     return parseAIResponse(analysis);
   } catch (error) {
     console.error('AIML API analysis error:', error.message);
-    return fallbackAnalysis(code, language);
+    // Return structured error response instead of fallback
+    const fallback = fallbackAnalysis(code, language);
+    fallback.error = `AI analysis unavailable: ${error.message}`;
+    return fallback;
   }
 }
 
@@ -86,8 +94,21 @@ function parseAIResponse(response) {
     const jsonMatch = response.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
       const parsed = JSON.parse(jsonMatch[0]);
+      const vulnerabilities = Array.isArray(parsed.vulnerabilities) ? parsed.vulnerabilities : [];
+      
+      // Validate and sanitize each vulnerability
+      const sanitized = vulnerabilities.map(v => ({
+        title: String(v.title || 'Unknown Vulnerability'),
+        severity: validateSeverity(v.severity),
+        category: String(v.category || 'security'),
+        description: String(v.description || 'No description provided'),
+        line: v.line ? Number(v.line) : null,
+        remediation: String(v.remediation || 'Review and fix this issue')
+      }));
+      
       return {
-        vulnerabilities: parsed.vulnerabilities || []
+        vulnerabilities: sanitized,
+        rawResponse: response
       };
     }
   } catch (error) {
@@ -96,8 +117,15 @@ function parseAIResponse(response) {
 
   // Fallback: parse text response
   return {
-    vulnerabilities: extractVulnerabilitiesFromText(response)
+    vulnerabilities: extractVulnerabilitiesFromText(response),
+    rawResponse: response
   };
+}
+
+function validateSeverity(severity) {
+  const valid = ['critical', 'high', 'medium', 'low', 'info'];
+  const normalized = String(severity || '').toLowerCase();
+  return valid.includes(normalized) ? normalized : 'medium';
 }
 
 function extractVulnerabilitiesFromText(text) {

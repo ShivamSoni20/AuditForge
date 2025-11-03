@@ -33,18 +33,33 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 // Middleware
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Serve static frontend files in production
-if (process.env.NODE_ENV === 'production') {
-  const frontendPath = path.join(__dirname, '../frontend/dist');
-  app.use(express.static(frontendPath));
-}
+// Request timeout middleware (60 seconds)
+app.use((req, res, next) => {
+  req.setTimeout(60000); // 60 second timeout
+  res.setTimeout(60000);
+  next();
+});
+
+// Request logging middleware
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    console.log(`${req.method} ${req.path} - ${res.statusCode} - ${duration}ms`);
+  });
+  next();
+});
+
+// Serve static frontend files (development and production)
+const frontendPath = path.join(__dirname, '../frontend/dist');
+app.use(express.static(frontendPath));
 
 // In-memory storage for audits (use database in production)
 const auditHistory = [];
@@ -487,16 +502,40 @@ app.post('/api/audit/etherscan', async (req, res) => {
 
 // Chat API endpoints
 app.post('/api/chat/message', async (req, res) => {
+  const requestId = uuidv4();
+  const startTime = Date.now();
+  
   try {
     const { message, chain = 'ethereum' } = req.body;
 
     if (!message || !message.trim()) {
-      return res.status(400).json({ error: 'Message is required' });
+      return res.status(400).json({ 
+        success: false,
+        error: 'Message is required',
+        requestId 
+      });
     }
 
-    console.log(`Processing chat message: ${message.substring(0, 50)}...`);
+    // Validate message length
+    if (message.length > 2000) {
+      return res.status(400).json({ 
+        success: false,
+        error: 'Message too long. Maximum 2000 characters.',
+        requestId 
+      });
+    }
 
-    const response = await processChatMessage(message, null, chain);
+    console.log(`[${requestId}] Processing chat message: ${message.substring(0, 50)}...`);
+
+    // Set timeout promise
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('Request timeout after 45 seconds')), 45000)
+    );
+
+    const response = await Promise.race([
+      processChatMessage(message, null, chain),
+      timeoutPromise
+    ]);
     
     res.json({
       success: true,
@@ -514,29 +553,79 @@ app.post('/api/chat/message', async (req, res) => {
 });
 
 app.post('/api/chat/message-with-file', upload.single('file'), async (req, res) => {
+  const requestId = uuidv4();
+  const startTime = Date.now();
+  
   try {
     const { message, chain = 'ethereum' } = req.body;
 
-    if (!message || !message.trim()) {
-      return res.status(400).json({ error: 'Message is required' });
+    if (!req.file) {
+      return res.status(400).json({ 
+        success: false,
+        error: 'File is required',
+        requestId 
+      });
+    }
+
+    // Validate file size
+    if (req.file.size > 2 * 1024 * 1024) {
+      return res.status(400).json({ 
+        success: false,
+        error: 'File too large. Maximum size is 2MB.',
+        requestId 
+      });
+    }
+
+    // Validate file type
+    const filename = req.file.originalname;
+    const validExtensions = ['.sol', '.rs', '.txt'];
+    const hasValidExtension = validExtensions.some(ext => filename.toLowerCase().endsWith(ext));
+    
+    if (!hasValidExtension) {
+      return res.status(400).json({ 
+        success: false,
+        error: 'Invalid file type. Only .sol and .rs files are supported.',
+        requestId 
+      });
     }
 
     let attachedFile = null;
-    if (req.file) {
+    try {
       const code = req.file.buffer.toString('utf-8');
-      const filename = req.file.originalname;
       const language = filename.endsWith('.rs') ? 'rust' : 'solidity';
+      
+      if (!code || code.trim().length === 0) {
+        return res.status(400).json({ 
+          success: false,
+          error: 'File is empty',
+          requestId 
+        });
+      }
       
       attachedFile = {
         code,
         filename,
         language
       };
+    } catch (decodeError) {
+      return res.status(400).json({ 
+        success: false,
+        error: 'Failed to read file. Please ensure it is a valid text file.',
+        requestId 
+      });
     }
 
-    console.log(`Processing chat message with file: ${message.substring(0, 50)}...`);
+    console.log(`[${requestId}] Processing chat message with file: ${filename}`);
 
-    const response = await processChatMessage(message, attachedFile, chain);
+    // Set timeout promise
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('Request timeout after 45 seconds')), 45000)
+    );
+
+    const response = await Promise.race([
+      processChatMessage(message || 'Analyze this contract', attachedFile, chain),
+      timeoutPromise
+    ]);
     
     res.json({
       success: true,
@@ -582,20 +671,17 @@ app.post('/api/chat/generate-fix', async (req, res) => {
   }
 });
 
-// Serve frontend for all non-API routes (must be last)
-if (process.env.NODE_ENV === 'production') {
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
-  });
-}
+// Catch-all route - serve frontend for client-side routing (must be last)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+});
 
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 AuditForge running on port ${PORT}`);
-  console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
-  if (process.env.NODE_ENV === 'production') {
-    console.log(`🌐 Frontend & API served on port ${PORT}`);
-  }
+  console.log(`📊 API: http://localhost:${PORT}/api/health`);
+  console.log(`🌐 Frontend: http://localhost:${PORT}`);
+  console.log(`🔨 App: http://localhost:${PORT}/app`);
 });
 
 // Export for Vercel serverless

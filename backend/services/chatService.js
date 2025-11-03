@@ -331,8 +331,12 @@ export async function processChatMessage(message, attachedFile = null, chain = '
         auditResult
       });
       
-      if (aiInsights.success) {
-        summary += `\n💡 **AI Analysis:**\n${aiInsights.response}\n`;
+      if (aiInsights.success && aiInsights.response) {
+        // Properly serialize AI response
+        const aiText = typeof aiInsights.response === 'string' 
+          ? aiInsights.response 
+          : JSON.stringify(aiInsights.response, null, 2);
+        summary += `\n💡 **AI Analysis:**\n${aiText}\n`;
       }
       
       response.message = summary;
@@ -385,8 +389,12 @@ export async function processChatMessage(message, attachedFile = null, chain = '
         auditResult
       });
       
-      if (aiInsights.success) {
-        summary += `\n💡 **AI Recommendations:**\n${aiInsights.response}\n`;
+      if (aiInsights.success && aiInsights.response) {
+        // Properly serialize AI response
+        const aiText = typeof aiInsights.response === 'string' 
+          ? aiInsights.response 
+          : JSON.stringify(aiInsights.response, null, 2);
+        summary += `\n💡 **AI Recommendations:**\n${aiText}\n`;
       }
       
       response.message = summary;

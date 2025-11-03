@@ -5,47 +5,85 @@ import { checkDepinVulnerabilities } from './depinAnalyzer.js';
 export async function auditContract(code, language, contractName) {
   console.log(`Auditing ${language} contract...`);
   
-  // Run multiple analysis passes in parallel
-  const [staticResults, aiResults, depinResults] = await Promise.all([
-    runStaticAnalysis(code, language),
-    analyzeWithAI(code, language, contractName),
-    checkDepinVulnerabilities(code, language)
-  ]);
+  try {
+    // Run multiple analysis passes in parallel with error handling
+    const [staticResults, aiResults, depinResults] = await Promise.allSettled([
+      runStaticAnalysis(code, language),
+      analyzeWithAI(code, language, contractName),
+      checkDepinVulnerabilities(code, language)
+    ]);
 
-  // Combine all vulnerabilities
-  const allVulnerabilities = [
-    ...staticResults.vulnerabilities,
-    ...aiResults.vulnerabilities,
-    ...depinResults.vulnerabilities
-  ];
+    // Extract results with fallbacks
+    const static_data = staticResults.status === 'fulfilled' ? staticResults.value : { vulnerabilities: [], gasOptimizations: [] };
+    const ai_data = aiResults.status === 'fulfilled' ? aiResults.value : { vulnerabilities: [] };
+    const depin_data = depinResults.status === 'fulfilled' ? depinResults.value : { vulnerabilities: [], insights: [], nodeOpsRecommendations: [] };
 
-  // Deduplicate and sort by severity
-  const uniqueVulnerabilities = deduplicateVulnerabilities(allVulnerabilities);
-  const sortedVulnerabilities = sortBySeverity(uniqueVulnerabilities);
+    // Combine all vulnerabilities with validation
+    const allVulnerabilities = [
+      ...(Array.isArray(static_data.vulnerabilities) ? static_data.vulnerabilities : []),
+      ...(Array.isArray(ai_data.vulnerabilities) ? ai_data.vulnerabilities : []),
+      ...(Array.isArray(depin_data.vulnerabilities) ? depin_data.vulnerabilities : [])
+    ].filter(v => v && typeof v === 'object');
 
-  // Calculate overall score
-  const score = calculateScore(sortedVulnerabilities);
+    // Deduplicate and sort by severity
+    const uniqueVulnerabilities = deduplicateVulnerabilities(allVulnerabilities);
+    const sortedVulnerabilities = sortBySeverity(uniqueVulnerabilities);
 
-  // Categorize vulnerabilities
-  const categories = categorizeVulnerabilities(sortedVulnerabilities);
+    // Calculate overall score (guaranteed to be a number)
+    const score = calculateScore(sortedVulnerabilities);
 
-  // Generate summary
-  const summary = generateSummary(sortedVulnerabilities, depinResults, score);
+    // Categorize vulnerabilities
+    const categories = categorizeVulnerabilities(sortedVulnerabilities);
 
-  return {
-    score,
-    summary,
-    vulnerabilities: sortedVulnerabilities,
-    categories,
-    depinInsights: depinResults.insights,
-    nodeOpsRecommendations: depinResults.nodeOpsRecommendations,
-    gasOptimizations: staticResults.gasOptimizations || [],
-    codeQuality: {
-      complexity: staticResults.complexity || 'Medium',
-      testCoverage: 'N/A',
-      documentation: staticResults.documentation || 'Partial'
-    }
-  };
+    // Generate summary
+    const summary = generateSummary(sortedVulnerabilities, depin_data, score);
+
+    return {
+      score,
+      riskLevel: summary.riskLevel,
+      summary,
+      vulnerabilities: sortedVulnerabilities,
+      categories,
+      depinInsights: Array.isArray(depin_data.insights) ? depin_data.insights : [],
+      nodeOpsRecommendations: Array.isArray(depin_data.nodeOpsRecommendations) ? depin_data.nodeOpsRecommendations : [],
+      gasOptimizations: Array.isArray(static_data.gasOptimizations) ? static_data.gasOptimizations : [],
+      codeQuality: {
+        complexity: static_data.complexity || 'Medium',
+        testCoverage: 'N/A',
+        documentation: static_data.documentation || 'Partial'
+      },
+      analysisErrors: [
+        staticResults.status === 'rejected' ? `Static analysis: ${staticResults.reason}` : null,
+        aiResults.status === 'rejected' ? `AI analysis: ${aiResults.reason}` : null,
+        depinResults.status === 'rejected' ? `DePIN analysis: ${depinResults.reason}` : null
+      ].filter(Boolean)
+    };
+  } catch (error) {
+    console.error('Critical error in audit engine:', error);
+    // Return minimal valid response
+    return {
+      score: 0,
+      riskLevel: 'Critical',
+      summary: {
+        riskLevel: 'Critical',
+        score: 0,
+        totalIssues: 0,
+        criticalIssues: 0,
+        highIssues: 0,
+        mediumIssues: 0,
+        recommendation: 'Audit failed due to system error. Please try again.',
+        depinReady: false,
+        nodeOpsCompatible: false
+      },
+      vulnerabilities: [],
+      categories: { security: [], depin: [], nodeops: [], gas: [], quality: [] },
+      depinInsights: [],
+      nodeOpsRecommendations: [],
+      gasOptimizations: [],
+      codeQuality: { complexity: 'Unknown', testCoverage: 'N/A', documentation: 'Unknown' },
+      analysisErrors: [error.message]
+    };
+  }
 }
 
 function deduplicateVulnerabilities(vulnerabilities) {
