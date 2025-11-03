@@ -10,6 +10,61 @@ import {
 dotenv.config();
 
 /**
+ * Format AI analysis in short, simple language
+ */
+function formatAIAnalysis(response) {
+  // If it's already a string, return it
+  if (typeof response === 'string') {
+    return response;
+  }
+  
+  // If it's an object with vulnerabilities array
+  if (response && Array.isArray(response.vulnerabilities)) {
+    const vulns = response.vulnerabilities;
+    
+    if (vulns.length === 0) {
+      return '✅ No major issues found! The contract looks good.';
+    }
+    
+    // Group by severity
+    const critical = vulns.filter(v => v.severity === 'critical' || v.severity === 'high');
+    const medium = vulns.filter(v => v.severity === 'medium');
+    const low = vulns.filter(v => v.severity === 'low' || v.severity === 'info');
+    
+    let formatted = '';
+    
+    // Critical/High issues
+    if (critical.length > 0) {
+      formatted += '🚨 **Critical Issues:**\n';
+      critical.slice(0, 3).forEach((v, i) => {
+        formatted += `${i + 1}. **${v.title}**\n`;
+        formatted += `   - ${v.description}\n`;
+        formatted += `   - Fix: ${v.remediation}\n\n`;
+      });
+    }
+    
+    // Medium issues
+    if (medium.length > 0) {
+      formatted += '⚠️ **Medium Issues:**\n';
+      medium.slice(0, 2).forEach((v, i) => {
+        formatted += `${i + 1}. **${v.title}**\n`;
+        formatted += `   - ${v.description}\n\n`;
+      });
+    }
+    
+    // Summary of low issues
+    if (low.length > 0) {
+      formatted += `ℹ️ **${low.length} minor issues** found (code quality, optimizations)\n`;
+    }
+    
+    return formatted;
+  }
+  
+  // Fallback to JSON
+  return JSON.stringify(response, null, 2);
+}
+
+/**
  * Process user message and determine intent
  */
 function parseUserIntent(message) {
@@ -332,10 +387,8 @@ export async function processChatMessage(message, attachedFile = null, chain = '
       });
       
       if (aiInsights.success && aiInsights.response) {
-        // Properly serialize AI response
-        const aiText = typeof aiInsights.response === 'string' 
-          ? aiInsights.response 
-          : JSON.stringify(aiInsights.response, null, 2);
+        // Format AI analysis in short, simple language
+        const aiText = formatAIAnalysis(aiInsights.response);
         summary += `\n💡 **AI Analysis:**\n${aiText}\n`;
       }
       
