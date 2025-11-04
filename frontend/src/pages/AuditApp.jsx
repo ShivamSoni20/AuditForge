@@ -12,9 +12,9 @@ function AuditApp() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-6">
         <Link 
           to="/"
-          className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors group"
+          className="inline-flex items-center gap-2 text-gray-400 hover:text-white group"
         >
-          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+          <ArrowLeft className="w-4 h-4" />
           <span>Back to Home</span>
         </Link>
       </div>
@@ -59,7 +59,7 @@ function AuditApp() {
 
         {/* Info Section */}
         <div className="mt-12 sm:mt-16 lg:mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          <div className="card hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 hover:scale-105">
+          <div className="card hover:shadow-xl hover:shadow-blue-500/10">
             <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3 text-blue-400 flex items-center gap-2">
               <span className="text-2xl">🔍</span>
               <span>Comprehensive Analysis</span>
@@ -68,7 +68,7 @@ function AuditApp() {
               Multi-layer security scanning combining AI, static analysis, and DePIN-specific checks
             </p>
           </div>
-          <div className="card hover:shadow-xl hover:shadow-purple-500/10 transition-all duration-300 hover:scale-105">
+          <div className="card hover:shadow-xl hover:shadow-purple-500/10">
             <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3 text-purple-400 flex items-center gap-2">
               <span className="text-2xl">🌐</span>
               <span>NodeOps Ready</span>
@@ -77,7 +77,7 @@ function AuditApp() {
               Specialized insights for node operators, staking mechanisms, and decentralized infrastructure
             </p>
           </div>
-          <div className="card hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300 hover:scale-105 sm:col-span-2 lg:col-span-1">
+          <div className="card hover:shadow-xl hover:shadow-green-500/10 sm:col-span-2 lg:col-span-1">
             <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3 text-green-400 flex items-center gap-2">
               <span className="text-2xl">📊</span>
               <span>Actionable Reports</span>

@@ -31,7 +31,7 @@ function LandingPage() {
             </div>
             <Link 
               to="/app"
-              className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-lg font-semibold transition-all shadow-lg hover:shadow-blue-500/50"
+              className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-lg font-semibold shadow-lg hover:shadow-blue-500/50"
             >
               Launch App
             </Link>
@@ -65,14 +65,14 @@ function LandingPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link 
               to="/app"
-              className="group px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-xl font-semibold text-lg transition-all shadow-xl hover:shadow-2xl hover:shadow-blue-500/50 flex items-center gap-2"
+              className="group px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-xl font-semibold text-lg shadow-xl hover:shadow-2xl hover:shadow-blue-500/50 flex items-center gap-2"
             >
               Start Auditing Free
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-5 h-5" />
             </Link>
             <a 
               href="#mvp"
-              className="px-8 py-4 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-xl font-semibold text-lg transition-all"
+              className="px-8 py-4 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-xl font-semibold text-lg"
             >
               View MVP Features
             </a>
@@ -113,7 +113,7 @@ function LandingPage() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {/* Feature 1 */}
-          <div className="bg-gradient-to-br from-blue-500/10 to-transparent border border-blue-500/30 rounded-2xl p-8 hover:border-blue-500/50 transition-all hover:scale-105">
+          <div className="bg-gradient-to-br from-blue-500/10 to-transparent border border-blue-500/30 rounded-2xl p-8 hover:border-blue-500/50">
             <div className="bg-blue-500/20 w-14 h-14 rounded-xl flex items-center justify-center mb-6">
               <Shield className="w-7 h-7 text-blue-400" />
             </div>
@@ -125,7 +125,7 @@ function LandingPage() {
           </div>
 
           {/* Feature 2 */}
-          <div className="bg-gradient-to-br from-purple-500/10 to-transparent border border-purple-500/30 rounded-2xl p-8 hover:border-purple-500/50 transition-all hover:scale-105">
+          <div className="bg-gradient-to-br from-purple-500/10 to-transparent border border-purple-500/30 rounded-2xl p-8 hover:border-purple-500/50">
             <div className="bg-purple-500/20 w-14 h-14 rounded-xl flex items-center justify-center mb-6">
               <Network className="w-7 h-7 text-purple-400" />
             </div>
@@ -137,7 +137,7 @@ function LandingPage() {
           </div>
 
           {/* Feature 3 */}
-          <div className="bg-gradient-to-br from-green-500/10 to-transparent border border-green-500/30 rounded-2xl p-8 hover:border-green-500/50 transition-all hover:scale-105">
+          <div className="bg-gradient-to-br from-green-500/10 to-transparent border border-green-500/30 rounded-2xl p-8 hover:border-green-500/50">
             <div className="bg-green-500/20 w-14 h-14 rounded-xl flex items-center justify-center mb-6">
               <Zap className="w-7 h-7 text-green-400" />
             </div>
@@ -149,7 +149,7 @@ function LandingPage() {
           </div>
 
           {/* Feature 4 */}
-          <div className="bg-gradient-to-br from-pink-500/10 to-transparent border border-pink-500/30 rounded-2xl p-8 hover:border-pink-500/50 transition-all hover:scale-105">
+          <div className="bg-gradient-to-br from-pink-500/10 to-transparent border border-pink-500/30 rounded-2xl p-8 hover:border-pink-500/50">
             <div className="bg-pink-500/20 w-14 h-14 rounded-xl flex items-center justify-center mb-6">
               <Code className="w-7 h-7 text-pink-400" />
             </div>
@@ -161,7 +161,7 @@ function LandingPage() {
           </div>
 
           {/* Feature 5 */}
-          <div className="bg-gradient-to-br from-yellow-500/10 to-transparent border border-yellow-500/30 rounded-2xl p-8 hover:border-yellow-500/50 transition-all hover:scale-105">
+          <div className="bg-gradient-to-br from-yellow-500/10 to-transparent border border-yellow-500/30 rounded-2xl p-8 hover:border-yellow-500/50">
             <div className="bg-yellow-500/20 w-14 h-14 rounded-xl flex items-center justify-center mb-6">
               <FileText className="w-7 h-7 text-yellow-400" />
             </div>
@@ -173,7 +173,7 @@ function LandingPage() {
           </div>
 
           {/* Feature 6 */}
-          <div className="bg-gradient-to-br from-cyan-500/10 to-transparent border border-cyan-500/30 rounded-2xl p-8 hover:border-cyan-500/50 transition-all hover:scale-105">
+          <div className="bg-gradient-to-br from-cyan-500/10 to-transparent border border-cyan-500/30 rounded-2xl p-8 hover:border-cyan-500/50">
             <div className="bg-cyan-500/20 w-14 h-14 rounded-xl flex items-center justify-center mb-6">
               <Globe className="w-7 h-7 text-cyan-400" />
             </div>
@@ -367,7 +367,7 @@ function LandingPage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 border border-gray-700 hover:border-blue-500/50 transition-all">
+            <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 border border-gray-700 hover:border-blue-500/50">
               <div className="text-4xl mb-4">👨‍💻</div>
               <h3 className="text-xl font-bold mb-3 text-white">Smart Contract Developers</h3>
               <p className="text-gray-400">
@@ -376,7 +376,7 @@ function LandingPage() {
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 border border-gray-700 hover:border-purple-500/50 transition-all">
+            <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 border border-gray-700 hover:border-purple-500/50">
               <div className="text-4xl mb-4">🌐</div>
               <h3 className="text-xl font-bold mb-3 text-white">Node Operators</h3>
               <p className="text-gray-400">
@@ -385,7 +385,7 @@ function LandingPage() {
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 border border-gray-700 hover:border-green-500/50 transition-all">
+            <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 border border-gray-700 hover:border-green-500/50">
               <div className="text-4xl mb-4">🔒</div>
               <h3 className="text-xl font-bold mb-3 text-white">Security Auditors</h3>
               <p className="text-gray-400">
@@ -408,7 +408,7 @@ function LandingPage() {
           </p>
           <Link 
             to="/app"
-            className="inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-xl font-bold text-lg transition-all shadow-2xl hover:shadow-blue-500/50 hover:scale-105"
+            className="inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl font-bold text-lg shadow-2xl"
           >
             Launch AuditForge Now
             <ArrowRight className="w-6 h-6" />
@@ -436,7 +436,7 @@ function LandingPage() {
                   href="https://github.com/ShivamSoni20/AuditForge" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-400 hover:text-white"
                 >
                   <Github className="w-6 h-6" />
                 </a>
@@ -446,18 +446,18 @@ function LandingPage() {
             <div>
               <h4 className="font-semibold text-white mb-4">Product</h4>
               <ul className="space-y-2 text-gray-400">
-                <li><Link to="/app" className="hover:text-white transition-colors">Launch App</Link></li>
-                <li><a href="#mvp" className="hover:text-white transition-colors">MVP Features</a></li>
-                <li><a href="https://github.com/ShivamSoni20/AuditForge" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Documentation</a></li>
+                <li><Link to="/app" className="hover:text-white">Launch App</Link></li>
+                <li><a href="#mvp" className="hover:text-white">MVP Features</a></li>
+                <li><a href="https://github.com/ShivamSoni20/AuditForge" target="_blank" rel="noopener noreferrer" className="hover:text-white">Documentation</a></li>
               </ul>
             </div>
             
             <div>
               <h4 className="font-semibold text-white mb-4">Resources</h4>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="https://github.com/ShivamSoni20/AuditForge" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a></li>
-                <li><a href="https://github.com/ShivamSoni20/AuditForge/issues" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Report Issues</a></li>
-                <li><a href="https://github.com/ShivamSoni20/AuditForge/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">License</a></li>
+                <li><a href="https://github.com/ShivamSoni20/AuditForge" target="_blank" rel="noopener noreferrer" className="hover:text-white">GitHub</a></li>
+                <li><a href="https://github.com/ShivamSoni20/AuditForge/issues" target="_blank" rel="noopener noreferrer" className="hover:text-white">Report Issues</a></li>
+                <li><a href="https://github.com/ShivamSoni20/AuditForge/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" className="hover:text-white">License</a></li>
               </ul>
             </div>
           </div>
