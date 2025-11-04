@@ -38,11 +38,35 @@ AI-powered smart contract security auditor specialized for **DePIN** and **NodeO
 
 ## 🚀 Quick Start
 
+### Option 1: Docker (Recommended)
+
+```bash
+# Clone repository
+git clone https://github.com/ShivamSoni20/AuditForge.git
+cd AuditForge
+
+# Set up environment
+cp backend/.env.example .env
+# Add your AIML_API_KEY to .env
+
+# Run with Docker Compose
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+```
+
+Open http://localhost:3000
+
+📖 **[Full Docker Setup Guide](./DOCKER_SETUP.md)**
+
+### Option 2: Local Development
+
 ```bash
 # Install dependencies
 npm run install-all
 
-# Configure (optional)
+# Configure
 cd backend
 cp .env.example .env
 # Add AIML_API_KEY to .env
