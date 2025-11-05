@@ -1,0 +1,42 @@
+# AuditForge - AI-Powered Smart Contract Auditor NodeOps Template
+# Users will be prompted to provide their API keys when deploying
+version: 0.1
+
+services:
+  app:
+    image: shivamsoni20/auditforge:latest
+    imagePullPolicy: Always
+    command: []
+    args: []
+    ports:
+      - containerPort: 3000
+        protocol: TCP
+        expose: true
+    env:
+      - name: NODE_ENV
+        value: production
+      - name: PORT
+        value: '3000'
+      - name: AIML_API_KEY
+        value: '{{.AIML_API_KEY}}'
+      - name: AIML_BASE_URL
+        value: https://api.aimlapi.com/v1
+      - name: ETHERSCAN_API_KEY
+        value: '{{.ETHERSCAN_API_KEY}}'
+      - name: ETHERSCAN_BASE_URL
+        value: https://api.etherscan.io/api
+      - name: BSCSCAN_API_KEY
+        value: '{{.BSCSCAN_API_KEY}}'
+      - name: POLYGONSCAN_API_KEY
+        value: '{{.POLYGONSCAN_API_KEY}}'
+      - name: ARBISCAN_API_KEY
+        value: '{{.ARBISCAN_API_KEY}}'
+      - name: OPTIMISM_API_KEY
+        value: '{{.OPTIMISM_API_KEY}}'
+      - name: BASESCAN_API_KEY
+        value: '{{.BASESCAN_API_KEY}}'
+    resourceUsage:
+      idle:
+        cpu: 200
+        memory: 512
+

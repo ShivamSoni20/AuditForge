@@ -38,7 +38,22 @@ AI-powered smart contract security auditor specialized for **DePIN** and **NodeO
 
 ## 🚀 Quick Start
 
-### Option 1: Docker (Recommended)
+### Option 1: NodeOps (One-Click Deploy)
+
+Deploy to NodeOps infrastructure with one command:
+
+```bash
+# Clone repository
+git clone https://github.com/ShivamSoni20/AuditForge.git
+cd AuditForge
+
+# Deploy using template
+nodeops deploy --template nodeops_template.yaml
+```
+
+🌐 **[NodeOps Deployment Guide](./NODEOPS_DEPLOYMENT.md)**
+
+### Option 2: Docker (Recommended for Self-Hosting)
 
 ```bash
 # Clone repository
@@ -58,9 +73,9 @@ docker-compose logs -f
 
 Open http://localhost:3000
 
-📖 **[Full Docker Setup Guide](./DOCKER_SETUP.md)**
+🐳 **[Full Docker Setup Guide](./DOCKER_SETUP.md)**
 
-### Option 2: Local Development
+### Option 3: Local Development
 
 ```bash
 # Install dependencies
